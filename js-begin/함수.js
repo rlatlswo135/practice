@@ -28,6 +28,30 @@ console.log(sum(1,2,3,4,5,6)) //js는 함수의 인자가 정해졋다해서 정
 배열에 담길것이다
 */
 
+//셋다 같은 함수호출인데 call과 apply는 약간 다른점이있다
 sum();
-sum.call();
-sum.apply();
+sum.call(null,1,2,3,4); 
+sum.apply(null,[1,2,3,4]); //첫번째 인자는 context객체를 받고(context세션때 참조) 두번째 인자는 그 함수에 들어갈 인자가 오는데 call은 값이오고 apply는 배열로써 값이온다
+
+//그러니 call을써서 호출한 함수에 인자를 바꾸려면 함수호출식자체가 바뀌겟지만 apply를 쓴 호출식은 해당 배열을 변수로써 담아놓은 코드줄이있다면 그 줄만변경해도되니 차이가 분명히있다.
+
+// -- 생성기함수 --
+
+function* gen(){ //yield = generator함수만의 return이라 생각하면될듯.
+    yield 10;
+    yield 20;
+    return 30;
+}
+//일반적인함수호출을 하면 함수내 코드 1번째부터 쭉실행되고 다시호출해도 그 과정이 반복하는게 일반적인데 gen함수는 마치 핑퐁하는것처럼 된다 10 -> 20 -> 30 좀 어려운개념.
+gen.next() // 10
+gen.next() // 20
+gen.next() // 30
+
+//gen함수를 만들면 즉 그 generator함수를 실행시킬수있는 도구가 팅겨나오는데 그 도구안에 next라는 메쏘드로 해당 gen함수를 실행시킨다.
+
+// -- 비동기 함수 --  ====> 추후 context객체 promise함수 callback(일급함수) 등 이해후 다시와보자
+
+async function myTask(){
+
+}
+
