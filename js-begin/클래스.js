@@ -17,3 +17,12 @@ console.log(test)
 //객체가 만들어지기 직전에 만들어지도록 약속된 함수? -> constructor(생성자함수) 즉 이 생성자함수로 이 클래스객체의 정보들을 생산해내는느낌인거지
 
 //메소드 내 메소드가 속한 객체를 참조하는 키워드 -> this 
+
+
+class name{
+    constructor()
+    method1(){}
+    method2(){}
+}
+
+//이런느낌

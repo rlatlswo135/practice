@@ -31,7 +31,7 @@ function* pluseEnergy2(){ //함수를 재개할 도구를가진 obj를 리턴한
     }
  }
 }
-const energy = plusEnergy(); //리턴하는 함수가 energy에 박히겟지?
+const energy = plusEnergy(); //리턴하는 함수가 energy에 박히겟지? 즉 plusEnergy를 한번호출햇으니 0이 energy에 박혀잇는상태로 리턴하는함수가 실행되는거지
 
 for(let i=0; i<5; i++){
     console.log(energy)
