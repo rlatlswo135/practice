@@ -7,9 +7,10 @@
         {
             "type": "pwa-chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
+            "name": "Debug App",
+            "preLaunchTask":"parcel webapp",
+            "url": "http://localhost:1234",
+            "webRoot": "${workspaceFolder}/dist"
         }
     ]
 }

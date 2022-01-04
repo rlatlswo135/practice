@@ -96,5 +96,5 @@ function CASE2(...args:number[]):number{
     return args.reduce((start:number,ele:number)=>start+ele,0)
 }
 
-console.log(sumNumbers(10,20,30))
+console.log(CASE2(10,20,30))
  
