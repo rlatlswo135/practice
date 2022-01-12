@@ -27,3 +27,5 @@ router.addRoutePath('/page/', newsFeedView);
 router.addRoutePath('/show/', newsDetailView);
   
 router.route();
+
+//내잔디 돌려내
