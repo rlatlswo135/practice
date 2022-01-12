@@ -33,3 +33,5 @@ export class NewsDetailApi extends Api {
       return this.getRequest<NewsDetail>();
     }
   }
+
+  //잔디 테스트
