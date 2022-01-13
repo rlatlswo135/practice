@@ -1,6 +1,7 @@
 import {NewsFeed,NewsStore} from './types'
 
 
+//결국 store는 window객체의 전역상태로있엇는데 너무 안정성이 낮기때문에 별도의 class로 store를 조작한는걸 만들어서 모듈화
 export default class Store implements NewsStore{
     //implement = 구현하다 즉 NewsStore 타입으로 구현한 클래스라는걸 명시해주는느낌
     private feeds:NewsFeed[]

@@ -1,6 +1,6 @@
 import View from '../core/view'
 import { NewsDetailApi } from '../core/api'
-import {NewsDetail,NewsComment,NewsStore} from '../types'
+import {NewsDetail,NewsComment,NewsStore,NewsFeed} from '../types'
 import {CONTENT_URL} from '../config'
 
 export default class NewsDetailView extends View {
@@ -39,25 +39,29 @@ export default class NewsDetailView extends View {
       this.store = store;
     }
   
-    render() {
+    async render() {
       const id = location.hash.substr(7);
       const api = new NewsDetailApi(CONTENT_URL.replace('@id', id));
-      const newsDetail: NewsDetail = api.getData();
-  
-      // for(let news of this.store.getAllFeeds()) {
-      //   if (news.id === Number(id)) {
-      //     news.read = true;
-      //     break;
-      //   }
-      // } =>이게 makeRead
+      // const newsDetail:any = api.getData((news:NewsDetail)=>{
+      //   this.store.makeRead(Number(id))
+      //   //true넣어주고 원래this.store.feed를 초기화하는게 아닌 코드를짯으니 읽은상태기억 ok
+      //   this.setTemplateData('comments', this.makeComment(news.comments))
+      //   this.setTemplateData('currentPage', String(this.store.currentPage));
+      //   this.setTemplateData('title', news.title);
+      //   this.setTemplateData('content', news.content);
+      //   this.updateView();  
+      // })
+
+      const response:NewsDetail = await api.request()
       this.store.makeRead(Number(id))
       //true넣어주고 원래this.store.feed를 초기화하는게 아닌 코드를짯으니 읽은상태기억 ok
-      this.setTemplateData('comments', this.makeComment(newsDetail.comments))
+      this.setTemplateData('comments', this.makeComment(response.comments))
       this.setTemplateData('currentPage', String(this.store.currentPage));
-      this.setTemplateData('title', newsDetail.title);
-      this.setTemplateData('content', newsDetail.content);
+      this.setTemplateData('title', response.title);
+      this.setTemplateData('content', response.content);
   
       this.updateView();  
+      
     }
   
     makeComment(comments: NewsComment[]): string {

@@ -7,7 +7,11 @@
         "noImplicitAny" : true,
         "noImplicitThis": true,
         "sourceMap": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "lib":[
+            "es6",
+            "dom" //async await기능을 쓰기위해서 ts는 config에 추가를해줘야하나부다
+        ]
     }
 }
 

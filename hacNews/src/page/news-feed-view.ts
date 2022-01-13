@@ -38,21 +38,41 @@ export default class NewsFeedView extends View {
   
       this.api = new NewsFeedApi(NEWS_URL.replace('@currentPage',String(this.store.currentPage)));
     
-      if (!this.store.hasFeeds) {
-        //비엇을때 api받은걸 가지고 setFeed
-        this.store.setFeeds(this.api.getData())
-      }
     }
     
-    render(): void {
+    //render함수가 async함수를 호출하니까(this.api.request) 마찬가지로 비동기함수여야해서 async로 감싸줘야한다.
+    //비록 render함수가 promise를 리턴하진않지만 그래도 async함수기때문에 promise로 감싸는대신 void로 해주면된다.
+    //promise가 충분히 학습이 되어야할듯.
+    async render(): Promise<void> {
       const current = location.hash.substr(7)
+      let newsFeedArray:NewsFeed[] = []
       //요청시마다 원래페이지또받아오니까 에바네 => 뭔가안되서 로직추가해서 기능되게함
-      if(current.length !== 0 && this.store.currentPage !== Number(current)){
+      if (!this.store.hasFeeds) {
+        console.log('맨처음')
+        //비엇을때 api받은걸 가지고 setFeed
+
+        // this.api.getData((feeds:NewsFeed[])=>{
+        //   this.store.setFeeds(feeds)
+        //   this.renderView();
+        // })
+
+        //위 = promise 아래 = async활용 후    
+        newsFeedArray = await this.api.request()
+        this.store.setFeeds(newsFeedArray)
+      }
+      if(current.length !== 0 && (this.store.currentPage !== Number(current))){
         this.store.currentPage = Number(current)
         this.api.setNewUrl(NEWS_URL.replace('@currentPage',String(this.store.currentPage)))
-        this.store.setFeeds(this.api.getData())
-      }else{
-        console.log('목록으로')
+
+        // this.api.getData((feeds:NewsFeed[])=>{
+        //   this.store.setFeeds(feeds)
+        //   this.renderView()
+        // }
+        newsFeedArray = await this.api.request()
+        this.store.setFeeds(newsFeedArray)
+        // 코드가 비동기로 바뀌엇으니까 렌더되는코드와 비동기코드가 함께잇지않다면 데이터를 받아오기전에 렌더가되서 없을거다 데이터가
+        // 이렇게 비동기코드가 동기족으로 짜졋으니 밑에 renderView를 따로둘필요는 없고 위에 데이터를 넣는부분만 분기해주고.
+        // renderView쪽 코드가 실행되게끔 되면 좋겟다.
       }
       for(let news of this.store.getAllFeeds()) {
         const { id, title, comments_count, user, points, time_ago, read } = news
@@ -63,7 +83,7 @@ export default class NewsFeedView extends View {
                 <a href="#/show/${id}">${title}</a>  
               </div>
               <div class="text-center text-sm">
-                <div class="w-10 text-white bg-green -300 rounded-lg px-0 py-2">${comments_count}</div>
+                <div class="w-10 text-black bg-green -300 rounded-lg px-0 py-2">${comments_count}</div>
               </div>
             </div>
             <div class="flex mt-3">
@@ -75,12 +95,11 @@ export default class NewsFeedView extends View {
             </div>
           </div>    
         `);
-      }
+    }
     
       this.setTemplateData('news_feed', this.getHtml());
       this.setTemplateData('prev_page', String(this.store.prevPage));
       this.setTemplateData('next_page', String(this.store.nextPage));
-    
-      this.updateView();  
+      this.updateView(); 
     }
   }
